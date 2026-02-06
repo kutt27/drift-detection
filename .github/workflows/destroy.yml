@@ -1,3 +1,4 @@
+# Terraform Destroy Workflow
 name: "Terraform Destroy"
 
 on:
