@@ -1,6 +1,6 @@
 # Security Group for Application Load Balancer
 resource "aws_security_group" "alb_sg" {
-  name        = "alb-security-group"
+  name        = "alb-sg-${var.environment}"
   description = "Security group for Application Load Balancer"
   vpc_id      = aws_vpc.main.id
 
@@ -35,7 +35,7 @@ resource "aws_security_group" "alb_sg" {
 
 # Security Group for EC2 Instances (App Tier)
 resource "aws_security_group" "app_sg" {
-  name        = "app-security-group"
+  name        = "app-sg-${var.environment}"
   description = "Security group for application instances - only allow traffic from ALB"
   vpc_id      = aws_vpc.main.id
 
@@ -70,7 +70,7 @@ resource "aws_security_group" "app_sg" {
 
 # Security Group for SSH access (optional - restrict to your IP)
 resource "aws_security_group" "allow_ssh" {
-  name        = "allow-ssh"
+  name        = "allow-ssh-${var.environment}"
   description = "Allow SSH access - RESTRICT THIS TO YOUR IP IN PRODUCTION"
   vpc_id      = aws_vpc.main.id
 
@@ -96,7 +96,7 @@ resource "aws_security_group" "allow_ssh" {
 
 # Deprecated - kept for reference, use app_sg and alb_sg instead
 resource "aws_security_group" "allow_http" {
-  name        = "allow_http"
+  name        = "allow-http-${var.environment}"
   description = "Allow HTTP traffic"
   vpc_id      = aws_vpc.main.id
 
@@ -121,7 +121,7 @@ resource "aws_security_group" "allow_http" {
 
 # Deprecated - use alb_sg instead
 resource "aws_security_group" "allow_https" {
-  name        = "allow_https"
+  name        = "allow-https-${var.environment}"
   description = "Allow HTTPS traffic"
   vpc_id      = aws_vpc.main.id
 
