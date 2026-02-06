@@ -65,7 +65,7 @@ jobs:
         id: destroy-plan
         run: |
           echo "📋 Generating destroy plan for ${{ inputs.environment }} environment..."
-          terraform plan -destroy -no-color > destroy_plan.txt
+          terraform plan -destroy -var="environment=${{ inputs.environment }}" -no-color > destroy_plan.txt
         continue-on-error: true
 
       - name: Show Destroy Plan
@@ -85,7 +85,7 @@ jobs:
         id: destroy
         run: |
           echo "🗑️ Destroying ${{ inputs.environment }} infrastructure..."
-          terraform destroy -auto-approve -no-color | tee destroy_output.txt
+          terraform destroy -auto-approve -var="environment=${{ inputs.environment }}" -no-color | tee destroy_output.txt
         continue-on-error: true
 
       - name: Create Destroy Report Issue

@@ -84,7 +84,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -no-color -out=tfplan -lock-timeout=300s | tee plan_output.txt
+          terraform plan -var="environment=${{ env.ENVIRONMENT }}" -no-color -out=tfplan -lock-timeout=300s | tee plan_output.txt
         continue-on-error: true
 
       - name: Comment PR with Plan

@@ -68,7 +68,7 @@ jobs:
         id: plan
         run: |
           set +e  # Don't exit on error
-          terraform plan -detailed-exitcode -no-color -lock-timeout=300s > plan_output.txt 2>&1
+          terraform plan -var="environment=${{ env.ENVIRONMENT }}" -detailed-exitcode -no-color -lock-timeout=300s > plan_output.txt 2>&1
           EXIT_CODE=$?
           echo "exitcode=$EXIT_CODE" >> $GITHUB_OUTPUT
           cat plan_output.txt
