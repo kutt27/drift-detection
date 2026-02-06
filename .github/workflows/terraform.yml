@@ -193,7 +193,7 @@ jobs:
         if: steps.check-plan.outputs.plan_exists == 'true'
         run: |
           echo "Applying Terraform changes for $ENVIRONMENT environment..."
-          terraform apply -auto-approve tfplan -lock-timeout=300s
+          terraform apply -auto-approve -lock-timeout=300s tfplan
 
       - name: No Changes to Apply
         if: steps.check-plan.outputs.plan_exists == 'false'
