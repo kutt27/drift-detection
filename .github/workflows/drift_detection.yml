@@ -1,6 +1,14 @@
 name: Terraform Drift Detection
 
+concurrency:
+  group: terraform-${{ github.ref_name }}
+  cancel-in-progress: false
+
 on:
+  push:
+    branches:
+      - main
+      - dev
   schedule:
     - cron: "*/1 * * * *" # Runs every minute
     # - cron: "0 8 * * *" # Runs daily at 8am UTC (comment out can use used in place of minute schedule)
@@ -60,7 +68,7 @@ jobs:
         id: plan
         run: |
           set +e  # Don't exit on error
-          terraform plan -detailed-exitcode -no-color > plan_output.txt 2>&1
+          terraform plan -detailed-exitcode -no-color -lock-timeout=300s > plan_output.txt 2>&1
           EXIT_CODE=$?
           echo "exitcode=$EXIT_CODE" >> $GITHUB_OUTPUT
           cat plan_output.txt
@@ -128,7 +136,7 @@ jobs:
         id: apply
         run: |
           echo "Applying Terraform changes to fix drift..."
-          terraform apply -auto-approve -no-color > apply_output.txt 2>&1
+          terraform apply -auto-approve -no-color -lock-timeout=300s > apply_output.txt 2>&1
         continue-on-error: true
 
       - name: Notify Slack - Drift Detected & Fixed
